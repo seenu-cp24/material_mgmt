@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-r@kj19tq=6@^tvh1q_@lqs0*iygfop&b%tufynuk$rio+iri9)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['srideepcomputers.com', 'www.srideepcomputers.com', '13.60.98.133', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['srideepcomputers.com', 'www.srideepcomputers.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',       # your login app
     'materials',      # ✅ newly added app
     'reports' ,       # for reports
+    'usage' ,	      # for usage
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'material_mgmt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

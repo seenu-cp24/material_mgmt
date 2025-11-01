@@ -50,13 +50,6 @@
     <a href="{% url 'add_material' %}"><i class="bi bi-plus-square me-2"></i> Add Material</a>
     <a href="{% url 'usage_list' %}"><i class="bi bi-tools me-2"></i> Usage</a>
     <a href="{% url 'report_list' %}"><i class="bi bi-bar-chart-line me-2"></i> Reports</a>
-
-    {% if is_superuser %}
-        <hr class="border-light mx-3">
-        <a href="{% url 'add_user' %}"><i class="bi bi-person-plus me-2"></i> Add User</a>
-        <a href="{% url 'forgot_password' %}"><i class="bi bi-key me-2"></i> Forgot Password</a>
-    {% endif %}
-
     <div class="mt-auto">
         <a href="{% url 'logout' %}" class="text-danger"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
     </div>
@@ -69,23 +62,6 @@
             <span class="navbar-brand mb-0 h5">Welcome, {{ user.username|default:"Admin" }} 👋</span>
         </div>
     </nav>
-
-    <!-- ✅ Bootstrap Message Alerts -->
-    {% if messages %}
-    <div class="container mb-4">
-        {% for message in messages %}
-            <div class="alert 
-                {% if message.tags == 'success' %}alert-success
-                {% elif message.tags == 'error' %}alert-danger
-                {% elif message.tags == 'warning' %}alert-warning
-                {% else %}alert-info{% endif %}
-                alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    </div>
-    {% endif %}
 
     <div class="container">
         <div class="row g-4">

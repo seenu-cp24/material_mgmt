@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Material Usage / Issue List</h2>
+<a href="{% url 'add_usage' %}" class="btn btn-primary">Add New Usage</a>
+<table border="1" cellpadding="6">
+    <tr>
+        <th>Material</th>
+        <th>Unit</th>
+        <th>Quantity Used</th>
+        <th>Issued To</th>
+        <th>Issue Date</th>
+        <th>Created By</th>
+    </tr>
+    {% for usage in usages %}
+    <tr>
+        <td>{{ usage.material.name }}</td>
+        <td>{{ usage.unit }}</td>
+        <td>{{ usage.quantity_used }}</td>
+        <td>{{ usage.issued_to }}</td>
+        <td>{{ usage.issue_date }}</td>
+        <td>{{ usage.created_by.username }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No usage records found.</td></tr>
+    {% endfor %}
+</table>
+<a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

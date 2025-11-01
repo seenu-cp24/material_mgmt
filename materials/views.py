@@ -46,3 +46,10 @@ def delete_material(request, material_id):
     material = get_object_or_404(Material, id=material_id)
     material.delete()
     return redirect('material_list')
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def report_list(request):
+    return render(request, 'materials/report_list.html')
