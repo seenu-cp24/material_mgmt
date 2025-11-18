@@ -1,23 +1,24 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
-# Login view
+# -------------------------
+# LOGIN / LOGOUT
+# -------------------------
 def user_login(request):
+    """
+    Handle user login
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if not username or not password:
-            messages.error(request, "Both username and password are required.")
-            return redirect('accounts:login')
-
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('accounts:dashboard')  # Correct namespace
+            return redirect('accounts:dashboard')  # ✅ namespace added
         else:
             messages.error(request, "Invalid username or password.")
             return redirect('accounts:login')
@@ -25,44 +26,56 @@ def user_login(request):
     return render(request, 'accounts/login.html')
 
 
-# Logout view
 @login_required
 def user_logout(request):
     logout(request)
     return redirect('accounts:login')
 
 
-# Dashboard view
+# -------------------------
+# DASHBOARD
+# -------------------------
 @login_required
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    """
+    Display the dashboard page
+    """
+    is_superuser = request.user.is_superuser
+    return render(request, 'accounts/dashboard.html', {'is_superuser': is_superuser})
 
 
-# Add User (Admin only)
+# -------------------------
+# USER MANAGEMENT
+# -------------------------
 @user_passes_test(lambda u: u.is_superuser)
 def add_user(request):
+    """
+    Add a new user (superuser only)
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         if not username or not password:
             messages.error(request, "Both username and password are required.")
-            return redirect('accounts:add_user')
+            return redirect('accounts:add_user')  # ✅ namespace added
 
         if User.objects.filter(username=username).exists():
             messages.error(request, f"Username '{username}' already exists.")
-            return redirect('accounts:add_user')
+            return redirect('accounts:add_user')  # ✅ namespace added
 
         User.objects.create_user(username=username, password=password)
         messages.success(request, f"User '{username}' created successfully.")
-        return redirect('accounts:dashboard')  # Correct namespace
+        return redirect('accounts:dashboard')  # ✅ namespace added
 
     return render(request, 'accounts/add_user.html')
 
 
-# Forgot Password (Admin only)
 @user_passes_test(lambda u: u.is_superuser)
 def forgot_password(request):
+    """
+    Allow superuser to reset another user's password
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         new_password = request.POST.get('new_password')
@@ -72,7 +85,7 @@ def forgot_password(request):
             user.set_password(new_password)
             user.save()
             messages.success(request, f"Password for '{username}' has been reset successfully.")
-            return redirect('accounts:dashboard')  # Correct namespace
+            return redirect('accounts:dashboard')  # ✅ namespace added
         except User.DoesNotExist:
             messages.error(request, f"User '{username}' not found.")
 

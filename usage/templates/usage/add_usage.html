@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+x{% extends 'base.html' %}
 
 {% block content %}
 <h2>Add Material Usage / Issue</h2>
@@ -6,6 +6,6 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-success">Save</button>
-    <a href="{% url 'usage_list' %}" class="btn btn-secondary">Cancel</a>
+    <a href="{% url 'usage:usage_list' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

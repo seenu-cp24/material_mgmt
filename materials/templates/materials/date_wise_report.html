@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Date-wise Material Usage Report</h2>
+
+    <form method="GET" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="start_date" class="form-label">Start Date</label>
+            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ request.GET.start_date }}">
+        </div>
+        <div class="col-md-4">
+            <label for="end_date" class="form-label">End Date</label>
+            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ request.GET.end_date }}">
+        </div>
+        <div class="col-md-4 align-self-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Material Name</th>
+                <th>Quantity Used</th>
+                <th>Unit</th>
+                <th>Issued To</th>
+                <th>Issue Date</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usage in usages %}
+            <tr>
+                <td>{{ usage.material.name }}</td>
+                <td>{{ usage.quantity_used }}</td>
+                <td>{{ usage.unit }}</td>
+                <td>{{ usage.issued_to }}</td>
+                <td>{{ usage.issue_date }}</td>
+                <td>{{ usage.created_by.username }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No usage records found for selected dates.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'materials:report_list' %}" class="btn btn-secondary mt-3">Back to Reports</a>
+</div>
+{% endblock %}

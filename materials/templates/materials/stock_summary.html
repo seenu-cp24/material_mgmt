@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Stock Summary Report</h2>
+
+    <div class="row g-4 mt-3">
+        <!-- Total Materials -->
+        <div class="col-md-3">
+            <div class="card shadow border-0 text-center">
+                <div class="card-body py-3">
+                    <i class="bi bi-box-seam display-5 text-primary"></i>
+                    <h6 class="mt-2 fw-bold">Total Materials</h6>
+                    <p class="text-muted small">{{ materials|length }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Materials -->
+        <div class="col-md-3">
+            <div class="card shadow border-0 text-center">
+                <div class="card-body py-3">
+                    <i class="bi bi-exclamation-triangle display-5 text-warning"></i>
+                    <h6 class="mt-2 fw-bold">Low Stock</h6>
+                    <p class="text-muted small">{{ low_stock_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="mt-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Material Name</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materials %}
+                <tr>
+                    <td>{{ material.name }}</td>
+                    <td>{{ material.quantity }}</td>
+                    <td>{{ material.unit }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">No materials found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{% url 'materials:report_list' %}" class="btn btn-secondary mt-3">Back to Reports</a>
+</div>
+{% endblock %}

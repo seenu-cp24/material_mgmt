@@ -38,32 +38,11 @@ def report_list(request):
     return render(request, 'materials/report_list.html')
 
 # Individual Reports
-
 def stock_summary(request):
-    """
-    Stock Summary Report:
-    - List all materials with quantities and units.
-    """
-    materials = Material.objects.all().order_by('name')
-    return render(request, 'materials/stock_summary.html', {'materials': materials})
+    return render(request, 'materials/stock_summary.html')
 
 def low_stock_report(request):
-    """
-    Low Stock Report:
-    - List only materials with quantity <= 10
-    - Show total low stock count
-    """
-    low_stock_materials = Material.objects.filter(quantity__lte=10).order_by('name')
-    low_stock_count = low_stock_materials.count()  # Total count for the top card
-    return render(request, 'materials/low_stock.html', {
-        'materials': low_stock_materials,
-        'low_stock_count': low_stock_count
-    })
+    return render(request, 'materials/low_stock.html')
 
 def date_wise_report(request):
-    """
-    Date-wise Report:
-    - List all materials ordered by creation date
-    """
-    materials = Material.objects.all().order_by('created_at')
-    return render(request, 'materials/date_wise_report.html', {'materials': materials})
+    return render(request, 'materials/date_wise_report.html')

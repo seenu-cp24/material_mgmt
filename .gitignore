@@ -1,7 +1,20 @@
-venv/
+# Python
 __pycache__/
+*.py[cod]
+*.egg-info/
 *.pyc
-*.log
+
+# Virtual environment
+venv/
+env/
+
+# Django
 *.sqlite3
-*.env
-*.zip
+media/
+staticfiles/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp

@@ -1,29 +1,47 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<h2>Material Usage / Issue List</h2>
-<a href="{% url 'add_usage' %}" class="btn btn-primary">Add New Usage</a>
-<table border="1" cellpadding="6">
-    <tr>
-        <th>Material</th>
-        <th>Unit</th>
-        <th>Quantity Used</th>
-        <th>Issued To</th>
-        <th>Issue Date</th>
-        <th>Created By</th>
-    </tr>
-    {% for usage in usages %}
-    <tr>
-        <td>{{ usage.material.name }}</td>
-        <td>{{ usage.unit }}</td>
-        <td>{{ usage.quantity_used }}</td>
-        <td>{{ usage.issued_to }}</td>
-        <td>{{ usage.issue_date }}</td>
-        <td>{{ usage.created_by.username }}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="6">No usage records found.</td></tr>
-    {% endfor %}
-</table>
-<a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+<div class="container mt-4">
+    <h2 class="mb-4">📋 Material Usage / Issue List</h2>
+    
+    <a href="{% url 'usage:add_usage' %}" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-square me-1"></i> Add New Usage
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Material</th>
+                    <th>Unit</th>
+                    <th>Quantity Used</th>
+                    <th>Issued To</th>
+                    <th>Issue Date</th>
+                    <th>Created By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usage in usages %}
+                <tr>
+                    <td>{{ usage.material.name }}</td>
+                    <td>{{ usage.unit }}</td>
+                    <td>{{ usage.quantity_used }}</td>
+                    <td>{{ usage.issued_to }}</td>
+                    <td>{{ usage.issue_date }}</td>
+                    <td>{{ usage.created_by.username }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No usage records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary mt-3">
+        <i class="bi bi-speedometer2 me-1"></i> Back to Dashboard
+    </a>
+</div>
 {% endblock %}

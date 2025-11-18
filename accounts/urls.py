@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+# ✅ Namespace for accounts app
+app_name = 'accounts'
+
 urlpatterns = [
     # 🔐 Authentication
     path('login/', views.user_login, name='login'),

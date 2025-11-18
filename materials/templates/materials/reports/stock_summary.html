@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Stock Summary Report</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-primary">
+                <div class="card-body">
+                    <h5>Total Materials</h5>
+                    <h3 class="text-primary fw-bold">{{ total_materials }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h5>Total Quantity in Stock</h5>
+                    <h3 class="text-success fw-bold">{{ total_quantity }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-danger">
+                <div class="card-body">
+                    <h5>Low Stock Items (below 5)</h5>
+                    <h3 class="text-danger fw-bold">{{ low_stock_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recently Added Materials -->
+    <h4 class="mt-4">Materials Added in Last 7 Days</h4>
+
+    <div class="card mt-3">
+        <div class="card-body p-0">
+            <table class="table table-bordered table-striped mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Material Name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if recent_materials %}
+                        {% for m in recent_materials %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ m.name }}</td>
+                                <td>{{ m.quantity }}</td>
+                                <td>{{ m.unit }}</td>
+                                <td>{{ m.created_at|date:'d-m-Y H:i' }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                No materials added in the last 7 days.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
