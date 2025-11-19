@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'materials',      # ✅ newly added app
     'reports' ,       # for reports
     'usage' ,	      # for usage
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
