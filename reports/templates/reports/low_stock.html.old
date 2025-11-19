@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">⚠️ Low Stock Report</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Material Name</th>
+                <th>Unit</th>
+                <th>Remaining Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in low_stock %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.unit }}</td>
+                <td class="text-danger fw-bold">{{ item.remaining }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">🎉 All items have sufficient stock!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-3">
+        <!-- Back to Reports Menu -->
+        <a href="{% url 'reports:unit_report' %}" class="btn btn-secondary">
+            ⬅ Back to Reports
+        </a>
+
+        <!-- Back to Dashboard -->
+        <a href="/" class="btn btn-primary">
+            🏠 Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

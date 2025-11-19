@@ -17,32 +17,18 @@ def report_home(request):
     return render(request, 'reports/report_list.html')
 
 
+
 # -------------------------------
-# 1. UNIT WISE MATERIAL REPORT (Material-wise remaining stock)
+# 1. UNIT WISE REPORT
 # -------------------------------
 def unit_wise_report(request):
+    units = {}
     materials = Material.objects.all()
-    unit_materials = {}
 
     for m in materials:
-        # Calculate used quantity
-        used_qty = MaterialUsage.objects.filter(material=m).aggregate(
-            total_used=Sum('quantity_used')
-        )['total_used'] or 0
+        units[m.unit] = units.get(m.unit, 0) + m.quantity
 
-        # Remaining stock
-        remaining = m.quantity - used_qty
-
-        # Group materials under their units
-        if m.unit not in unit_materials:
-            unit_materials[m.unit] = []
-        unit_materials[m.unit].append({
-            'name': m.name,
-            'remaining': remaining
-        })
-
-    return render(request, 'reports/unit_report.html', {'unit_materials': unit_materials})
-
+    return render(request, 'reports/unit_report.html', {'units': units})
 
 
 # -------------------------------
@@ -71,7 +57,7 @@ def stock_summary(request):
 
 
 # -------------------------------
-# 3. LOW STOCK REPORT
+# 3. LOW STOCK REPORT (NEW)
 # -------------------------------
 def low_stock_report(request):
     materials = Material.objects.all()
@@ -118,7 +104,7 @@ def download_csv(request):
 
 
 # -------------------------------
-# 5. DOWNLOAD PDF
+# 5. DOWNLOAD PDF (NEW)
 # -------------------------------
 def download_pdf(request):
     response = HttpResponse(content_type='application/pdf')
@@ -137,12 +123,7 @@ def download_pdf(request):
     materials = Material.objects.all()
 
     for m in materials:
-        used_qty = MaterialUsage.objects.filter(material=m).aggregate(
-            total_used=Sum('quantity_used')
-        )['total_used'] or 0
-
-        remaining = m.quantity - used_qty
-        line = f"{m.name} | Remaining: {remaining} | Unit: {m.unit}"
+        line = f"{m.name} | Qty: {m.quantity} | Unit: {m.unit}"
         p.drawString(50, y, line)
         y -= 20
         if y < 50:

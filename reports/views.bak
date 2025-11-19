@@ -1,0 +1,68 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from materials.models import Material
+from usage.models import MaterialUsage
+from django.db.models import Sum
+import csv
+
+# -------------------------------
+# 1. UNIT WISE REPORT (Existing)
+# -------------------------------
+def unit_wise_report(request):
+    units = {}
+    materials = Material.objects.all()
+
+    for m in materials:
+        units[m.unit] = units.get(m.unit, 0) + m.quantity
+
+    return render(request, 'reports/unit_report.html', {'units': units})
+
+
+# -------------------------------
+# 2. STOCK SUMMARY REPORT (NEW)
+# -------------------------------
+def stock_summary(request):
+    materials = Material.objects.all()
+    summary = []
+
+    for material in materials:
+        # Total used from usage table
+        used_qty = MaterialUsage.objects.filter(material=material).aggregate(
+            total_used=Sum('quantity_used')
+        )['total_used'] or 0
+
+        # Remaining stock
+        remaining = material.quantity - used_qty
+
+        summary.append({
+            'name': material.name,
+            'unit': material.unit,
+            'total_added': material.quantity,
+            'total_used': used_qty,
+            'remaining': remaining,
+        })
+
+    return render(request, 'reports/stock_summary.html', {'summary': summary})
+
+
+# -------------------------------
+# 3. CSV DOWNLOAD (Existing)
+# -------------------------------
+def download_csv(request):
+    materials = Material.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="materials_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Name', 'Description', 'Quantity', 'Unit', 'Created By'])
+
+    for m in materials:
+        writer.writerow([
+            m.name,
+            m.description,
+            m.quantity,
+            m.unit,
+            m.created_by.username if m.created_by else ''
+        ])
+
+    return response

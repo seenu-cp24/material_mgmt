@@ -4,21 +4,16 @@ from . import views
 app_name = 'reports'
 
 urlpatterns = [
-    # Home page for Reports
-    path('', views.report_home, name='report_home'),
 
-    # Unit-wise report
-    path('unit-wise/', views.unit_wise_report, name='unit_report'),
+    # Reports Home Page (Report List)
+    path('', views.report_list, name='report_list'),
 
-    # Stock summary report
+    # Individual Reports
+    path('unit-report/', views.unit_wise_report, name='unit_report'),
     path('stock-summary/', views.stock_summary, name='stock_summary'),
-
-    # Low stock report
     path('low-stock/', views.low_stock_report, name='low_stock_report'),
 
-    # CSV download
+    # Downloads
     path('download-csv/', views.download_csv, name='download_csv'),
-
-    # PDF download
     path('download-pdf/', views.download_pdf, name='download_pdf'),
 ]

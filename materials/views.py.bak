@@ -1,85 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from .models import Material
 from .forms import MaterialForm
 
-# -------------------------------
 # Materials CRUD
-# -------------------------------
-
 def material_list(request):
-    """List all materials"""
     materials = Material.objects.all().order_by('-created_at')
     return render(request, 'materials/material_list.html', {'materials': materials})
 
-
 def add_material(request):
-    """Add a new material or update quantity if it already exists"""
     if request.method == 'POST':
         form = MaterialForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            unit = form.cleaned_data['unit']
-            quantity = form.cleaned_data['quantity']
-            description = form.cleaned_data.get('description')
-
-            # Check if material already exists with same name and unit
-            material, created = Material.objects.get_or_create(
-                name=name,
-                unit=unit,
-                defaults={'quantity': quantity, 'description': description, 'created_by': request.user}
-            )
-
-            if not created:
-                # Material exists, update quantity
-                material.quantity += quantity
-                material.save()
-                messages.success(request, f"✅ Existing material '{name}' updated with additional {quantity} units.")
-            else:
-                messages.success(request, f"✅ New material '{name}' added successfully!")
-
+            form.save()
             return redirect('materials:material_list')
     else:
         form = MaterialForm()
-
     return render(request, 'materials/add_material.html', {'form': form})
 
-
 def edit_material(request, material_id):
-    """Edit material details"""
     material = get_object_or_404(Material, id=material_id)
     if request.method == 'POST':
         form = MaterialForm(request.POST, instance=material)
         if form.is_valid():
             form.save()
-            messages.success(request, f"✏️ Material '{material.name}' updated successfully!")
             return redirect('materials:material_list')
     else:
         form = MaterialForm(instance=material)
-
     return render(request, 'materials/edit_material.html', {'form': form, 'material': material})
 
-
 def delete_material(request, material_id):
-    """Delete a material"""
     material = get_object_or_404(Material, id=material_id)
     material.delete()
-    messages.success(request, f"🗑️ Material '{material.name}' deleted successfully!")
     return redirect('materials:material_list')
 
-
-# -------------------------------
 # Reports Dashboard
-# -------------------------------
-
 def report_list(request):
-    """Reports Dashboard"""
     return render(request, 'materials/report_list.html')
 
-
-# -------------------------------
 # Individual Reports
-# -------------------------------
 
 def stock_summary(request):
     """
@@ -89,7 +47,6 @@ def stock_summary(request):
     materials = Material.objects.all().order_by('name')
     return render(request, 'materials/stock_summary.html', {'materials': materials})
 
-
 def low_stock_report(request):
     """
     Low Stock Report:
@@ -97,12 +54,11 @@ def low_stock_report(request):
     - Show total low stock count
     """
     low_stock_materials = Material.objects.filter(quantity__lte=10).order_by('name')
-    low_stock_count = low_stock_materials.count()  # Total count for top card
+    low_stock_count = low_stock_materials.count()  # Total count for the top card
     return render(request, 'materials/low_stock.html', {
         'materials': low_stock_materials,
         'low_stock_count': low_stock_count
     })
-
 
 def date_wise_report(request):
     """

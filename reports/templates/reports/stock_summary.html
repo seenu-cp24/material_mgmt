@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">📦 Stock Summary Report</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Material Name</th>
+                <th>Unit</th>
+                <th>Total Added</th>
+                <th>Total Used</th>
+                <th>Remaining Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in summary %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.unit }}</td>
+                <td>{{ item.total_added }}</td>
+                <td>{{ item.total_used }}</td>
+
+                {% if item.remaining <= 5 %}
+                    <td style="color: red; font-weight: bold;">{{ item.remaining }}</td>
+                {% else %}
+                    <td>{{ item.remaining }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'reports:unit_report' %}" class="btn btn-secondary mt-3">Back</a>
+</div>
+{% endblock %}

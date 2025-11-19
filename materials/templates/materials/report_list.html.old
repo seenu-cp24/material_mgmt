@@ -23,10 +23,10 @@
         </a>
 
         <!-- Low Stock Report -->
-        <a href="{% url 'reports:low_stock_report' %}"
+        <a href="{% url 'reports:low_stock' %}"
            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <span>⚠️ Low Stock Report</span>
-            <span class="badge bg-warning">View</span>
+            <span class="badge bg-warning text-dark">View</span>
         </a>
 
         <!-- CSV Download -->
@@ -40,7 +40,7 @@
         <a href="{% url 'reports:download_pdf' %}"
            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <span>📄 Download Materials PDF</span>
-            <span class="badge bg-danger">PDF</span>
+            <span class="badge bg-danger">Download</span>
         </a>
 
     </div>

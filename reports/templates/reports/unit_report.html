@@ -1,28 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Unit-wise Material Report</title>
-</head>
-<body>
-    <h2>Unit-wise Material Report</h2>
+{% extends 'base.html' %}
 
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>Unit</th>
-            <th>Total Quantity</th>
-        </tr>
-        {% for unit, qty in units.items %}
-        <tr>
-            <td>{{ unit }}</td>
-            <td>{{ qty }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="2">No data available</td></tr>
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">📦 Unit-wise Material Report</h2>
+
+    {% if unit_materials %}
+        {% for unit, materials in unit_materials.items %}
+            <h4 class="mt-4">{{ unit }}</h4>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Material Name</th>
+                        <th>Remaining Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in materials %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>
+                            {% if item.remaining <= 5 %}
+                                <span class="badge bg-danger">{{ item.remaining }}</span>
+                            {% elif item.remaining <= 20 %}
+                                <span class="badge bg-warning text-dark">{{ item.remaining }}</span>
+                            {% else %}
+                                <span class="badge bg-success">{{ item.remaining }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">No materials under this unit</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endfor %}
-    </table>
+    {% else %}
+        <p class="text-center">No materials found.</p>
+    {% endif %}
 
-    <br>
-    <a href="/reports/download/">Download CSV</a> |
-    <a href="/accounts/dashboard/">Back to Dashboard</a>
-</body>
-</html>
+    <div class="d-flex justify-content-between mt-3">
+        <a href="{% url 'reports:report_home' %}" class="btn btn-secondary">⬅ Back to Reports</a>
+        <a href="/accounts/dashboard/" class="btn btn-primary">🏠 Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

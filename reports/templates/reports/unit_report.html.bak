@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">📦 Unit-wise Material Report</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Unit</th>
+                <th>Total Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for unit, qty in units.items %}
+            <tr>
+                <td>{{ unit }}</td>
+                <td class="fw-bold">{{ qty }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center">No data available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-3">
+        <a href="/reports/" class="btn btn-secondary">⬅ Back to Reports</a>
+        <a href="/accounts/dashboard/" class="btn btn-primary">🏠 Back to Dashboard</a>
+    </div>
+
+</div>
+{% endblock %}

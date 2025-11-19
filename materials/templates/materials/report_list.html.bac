@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Reports</h2>
+
+    <div class="list-group">
+
+        <!-- Stock Summary Report -->
+        <a href="{% url 'reports:stock_summary' %}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span>📦 Stock Summary Report</span>
+            <span class="badge bg-primary">View</span>
+        </a>
+
+        <!-- Low Stock Report -->
+        <a href="{% url 'reports:low_stock_report' %}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span>⚠️ Low Stock Report</span>
+            <span class="badge bg-warning">View</span>
+        </a>
+
+        <!-- Date-wise Report -->
+        <a href="{% url 'reports:date_wise_report' %}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span>📅 Date-wise Report</span>
+            <span class="badge bg-success">View</span>
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

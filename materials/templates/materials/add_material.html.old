@@ -7,17 +7,6 @@
     <div class="card shadow-sm p-4">
         <h2 class="text-primary mb-4 text-center">📥 Add New Material</h2>
 
-        <!-- Display success messages -->
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-        {% endif %}
-
-        <!-- Display form errors -->
         {% if form.errors %}
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -38,22 +27,22 @@
 
             <div class="mb-3">
                 <label for="id_name" class="form-label">Material Name</label>
-                {{ form.name|add_class:"form-control" }}
+                {{ form.name }}
             </div>
 
             <div class="mb-3">
                 <label for="id_description" class="form-label">Description</label>
-                {{ form.description|add_class:"form-control" }}
+                {{ form.description }}
             </div>
 
             <div class="mb-3">
                 <label for="id_quantity" class="form-label">Quantity</label>
-                {{ form.quantity|add_class:"form-control" }}
+                {{ form.quantity }}
             </div>
 
             <div class="mb-3">
                 <label for="id_unit" class="form-label">Unit</label>
-                {{ form.unit|add_class:"form-select" }}
+                {{ form.unit }}
             </div>
 
             <div class="d-flex gap-2 mt-3">

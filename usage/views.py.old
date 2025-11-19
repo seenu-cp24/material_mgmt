@@ -1,0 +1,19 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import MaterialUsage
+from .forms import MaterialUsageForm  # <- match the form name
+
+# List all usages
+def usage_list(request):
+    usages = MaterialUsage.objects.all().order_by('-issue_date')
+    return render(request, 'usage/usage_list.html', {'usages': usages})
+
+# Add new usage
+def add_usage(request):
+    if request.method == 'POST':
+        form = MaterialUsageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('usage:usage_list')  # use namespace
+    else:
+        form = MaterialUsageForm()
+    return render(request, 'usage/add_usage.html', {'form': form})
