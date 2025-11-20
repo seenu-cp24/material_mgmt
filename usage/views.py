@@ -33,12 +33,15 @@ def add_usage(request):
             remaining_qty = material.quantity - total_used
 
             if requested_qty > remaining_qty:
-                # Not enough stock, show error message
                 messages.error(request, f"❌ Not enough stock for '{material.name}'. Available: {remaining_qty}, Requested: {requested_qty}")
                 return render(request, 'usage/add_usage.html', {'form': form})
 
-            # Enough stock, save usage
+            # Assign the logged-in user
+            usage_instance.created_by = request.user
+
+            # Save usage
             usage_instance.save()
+
             messages.success(request, f"✅ Material '{material.name}' issued successfully!")
             return redirect('usage:usage_list')
     else:
